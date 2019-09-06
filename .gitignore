@@ -1,2 +1,3 @@
+*.pyc
 app/__pycache__
 app/web/__pycache__
