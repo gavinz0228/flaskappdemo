@@ -1,3 +1,11 @@
 *.pyc
 app/__pycache__
 app/web/__pycache__
+
+app/static/node_modules/
+app/static/node_modules
+app/static/.pnp
+app/static/.pnp.js
+app/static/coverage
+
+app/static/build

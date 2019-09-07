@@ -1,4 +1,4 @@
-from app.web.common import error_response
+from app.api.common import error_response
 from flask import current_app as app
 from werkzeug.exceptions import InternalServerError
 

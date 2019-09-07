@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask import current_app as app
-from app.web.common import response, is_file_allowed
-from app.web.common import NoFileNameFoundError, NoFileNameFoundError, FileFormatNotAllowedError, NoFilePartFoundError
+from app.api.common import response, is_file_allowed
+from app.api.common import NoFileNameFoundError, NoFileNameFoundError, FileFormatNotAllowedError, NoFilePartFoundError
 from os import path
 
 bp = Blueprint('upload', __name__, url_prefix='/upload')
@@ -13,6 +13,7 @@ def add_task():
 
 @bp.route('/perform_task', methods = ['POST'])
 def perform_task():
+    print(request.files)
     if 'file' not in request.files:
         raise NoFilePartFoundError()
 

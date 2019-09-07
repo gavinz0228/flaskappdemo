@@ -6,6 +6,7 @@ def response(data):
     res["errorMessage"] = None
     res["statusCode"] = 200
     return jsonify(res), 200, {'ContentType':'application/json'}
+    
 def error_response(error_msg, status_code):
     res = {}
     res["data"] = ""
