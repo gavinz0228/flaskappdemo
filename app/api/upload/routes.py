@@ -16,13 +16,13 @@ def perform_task():
 
     if 'file' not in request.files:
         raise NoFilePartFoundError()
-
     file = request.files['file']
     if file.filename == "":
         raise NoFileNameFoundError()
-
     if not is_file_allowed(file.filename):
         raise FileFormatNotAllowedError()
 
     file.save(path.join(app.config["TEMP_UPLOAD_PATH"], file.filename))
     return response("File is successfully uploaded")
+
+
