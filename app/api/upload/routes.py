@@ -13,7 +13,7 @@ def add_task():
 
 @bp.route('/perform_task', methods = ['POST'])
 def perform_task():
-    print(request.files)
+
     if 'file' not in request.files:
         raise NoFilePartFoundError()
 
