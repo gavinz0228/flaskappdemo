@@ -1,17 +1,20 @@
 import React from 'react';
-import {Button, ProgressBar, Container, Row, Col, Jumbotron} from 'react-bootstrap'
-import axios from 'axios'
+import {Button, ProgressBar, Container, Row, Col, Card, Jumbotron} from 'react-bootstrap'
+import  {FileUploadItem} from './FileUploadItem'
 import {FileUploadApi} from '../api/FileUploadApi'
+
 export class Upload extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             selectedFile:{},
             uploadPercentage:0,
-            uploadDescription: ""
+            uploadDescription: "",
+            filesChosen:[]
         }
         this.uploadButton = React.createRef()
-        
+        this.onDragOver = this.onDragOver.bind(this);
+        this.onDrop = this.onDrop.bind(this);
         this.onFileChange = this.onFileChange.bind(this);
         this.onUpload = this.onUpload.bind(this);
         this.onUploadProgressChange = this.onUploadProgressChange.bind(this);
@@ -51,20 +54,52 @@ export class Upload extends React.Component {
         this.setState({uploadDescription: percentage + "%"})
         console.log(progressEvent.loaded , this.state.selectedFile.size, this.state.uploadPercentage);
     }
+    onDragOver(event)
+    {
+        //console.log(event);
+        event.preventDefault()
+    }
+    onDrop(event){
+        event.preventDefault();
+        let allFiles = []
+        if (event.dataTransfer.items) {
+            for (var i = 0; i < event.dataTransfer.items.length; i++) {
 
+              if (event.dataTransfer.items[i].kind === 'file') {
+                var file = event.dataTransfer.items[i].getAsFile();
+                allFiles.push(file);
+              }
+            }
+          }
+          this.setState(
+            {
+                filesChosen: [...this.state.filesChosen, ...allFiles]
+            }
+        );
+    }
     render(){
+        const fileInfo = this.state.filesChosen.map((file)=>{
+            return (<FileUploadItem fileInfo={file} key={file.name}/>)
+        });
         return (
-            <Container>
+            <Container >
                 <Row>
-                    File Upload
+
                 </Row>
                 <Row>
-                    <Col md = {{span: 6, offset: 3}}>
-                        <Jumbotron>
-                            <input type="file" name="fileUpload" onChange={this.onFileChange} />
-                            <Button ref={this.uploadButton} onClick={this.onUpload}>Upload</Button>
-                            <ProgressBar animated now={this.state.uploadPercentage} label={this.state.uploadDescription}/>
+                    <Col md = {{span: 8, offset: 2}}>
+                        <Jumbotron 
+                            onDrop= {this.onDrop}
+                            onDragOver = {this.onDragOver}
+                            style = {{minHeight: 100}} >
+                        <span><b>Please drag one or more files to this area</b></span>
+                        {fileInfo}
                         </Jumbotron>
+                        <div>
+                            {/* <input type="file" name="fileUpload" onChange={this.onFileChange} /> */}
+                            <Button ref={this.uploadButton} onClick={this.onUpload}>Upload</Button>
+                            {/*<ProgressBar animated now={this.state.uploadPercentage} label={this.state.uploadDescription}/>*/}
+                        </div>
                     </Col>
                 </Row>
             </Container>

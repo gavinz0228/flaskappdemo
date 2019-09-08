@@ -1,8 +1,8 @@
-from flask import Blueprint, request
-
+          
+from app.api.common import response
+from flask import Blueprint
+import uuid
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-@bp.route('/login', methods = ('GET', 'POST'))
+@bp.route('/login', methods = ['POST'])
 def login():
-    if request.method == "POST":
-        return "hello"
-    return "Welcome to login"
+    return response({"sessionToken": uuid.uuid4()})

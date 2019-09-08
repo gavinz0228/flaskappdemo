@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Container, Row, Col, ListGroup} from 'react-bootstrap'
+import { Container, Row, Col, ListGroup} from 'react-bootstrap'
 import {Line, Pie} from 'react-chartjs-2'
 import {StatsApi} from '../api/StatsApi'
 export class Dashboard extends React.Component {
@@ -37,7 +37,7 @@ export class Dashboard extends React.Component {
                     <Row>
                         
                         <Col md={{span:6}}>
-                            <p><h3>Current Unresolved Errors</h3></p>
+                            <div><h3>Current Unresolved Errors</h3></div>
                             <ListGroup>
                                 <ListGroup.Item>Upload Errors: 0</ListGroup.Item>
                                 <ListGroup.Item>Processing Errors: 0</ListGroup.Item>
@@ -48,7 +48,7 @@ export class Dashboard extends React.Component {
   
                         </Col>
                         <Col md={{span:6}}>
-                            <p><h3>Error by Device Types</h3></p>
+                            <div><h3>Error by Device Types</h3></div>
                             <Pie data = {this.state.errorStatsByDeviceTypes} />
                         </Col>
                     </Row>
