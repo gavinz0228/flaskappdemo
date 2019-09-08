@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, ListGroup} from 'react-bootstrap'
+import { Container, Row, Col, ListGroup, Alert} from 'react-bootstrap'
 import {Line, Pie} from 'react-chartjs-2'
 import {StatsApi} from '../api/StatsApi'
 export class Dashboard extends React.Component {
@@ -32,7 +32,15 @@ export class Dashboard extends React.Component {
             <div>
                 <Container>
                     <Row>
+                    <Alert variant="primary">
+                            10 files are awaiting to be processed at this moment.
+                        </Alert>
+                    </Row>
+                    <Row>
                         <Line height={100} data = {this.state.uploadStatsByDate} />
+                    </Row>
+                    <Row>
+
                     </Row>
                     <Row>
                         
@@ -42,7 +50,7 @@ export class Dashboard extends React.Component {
                                 <ListGroup.Item>Upload Errors: 0</ListGroup.Item>
                                 <ListGroup.Item>Processing Errors: 0</ListGroup.Item>
                                 <ListGroup.Item>Data Storage Errors: 0</ListGroup.Item>
-                                <ListGroup.Item>Unknown Application Errors: 0</ListGroup.Item>
+                                <ListGroup.Item>Application Errors: 0</ListGroup.Item>
                                 <ListGroup.Item>Unknown Application Errors: 0</ListGroup.Item>
                             </ListGroup>
   

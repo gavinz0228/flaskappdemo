@@ -1,12 +1,17 @@
 import React from 'react';
-import { Button, Navbar, Form, Nav, FormControl } from 'react-bootstrap';
+import { Button, Navbar, Form, Nav, NavDropdown, Container } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
 import {Route, HashRouter, Redirect } from 'react-router-dom'
-import {Upload} from './Upload'
+import {FileUploadPanel} from './FileUploadPanel'
 import {Dashboard} from './Dashboard'
-import DataManager from './DataManager'
+import {DataManager} from './DataManager'
+import {LogViewer} from './LogViewer'
 
 export class Admin extends React.Component {
+  constructor(props){
+    super(props);
+
+  }
   render(){
     return (
           <HashRouter>
@@ -19,27 +24,35 @@ export class Admin extends React.Component {
                     <Nav.Link>Dashboard</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/admin/upload">
-                    <Nav.Link>Upload File</Nav.Link>
+                    <Nav.Link>Upload Files</Nav.Link>
                   </LinkContainer>
-                  <LinkContainer to="/admin/data_manager">
+                  <LinkContainer to="/admin/dataManager">
                     <Nav.Link>Data Manager</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/logViewer">
+                    <Nav.Link>Log Viewer</Nav.Link>
                   </LinkContainer>
                 </Nav>
                 <Form inline>
-                  <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                  <Button variant="outline-success">Search</Button>
+                  
+                  <NavDropdown title="Hi, Technician1" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1">My Upload</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">Change Password</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">Support</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/3.4">Sign Out</NavDropdown.Item>
+                  </NavDropdown>
                 </Form>
               </Navbar.Collapse>
             </Navbar>
-            <div>
+            <Container style={{paddingTop: 50}}>
               <Redirect from="/admin" exact to="/admin/dashboard" />
               <Route path="/admin/dashboard" component={Dashboard}/>
-              <Route path="/admin/upload" component={Upload}/>
-              <Route path="/admin/data_manager" component={DataManager}/>
-            </div>
+              <Route path="/admin/upload" component={FileUploadPanel}/>
+              <Route path="/admin/dataManager" component={DataManager}/>
+              <Route path="/admin/logViewer" component={LogViewer}/>
+            </Container>
           </HashRouter>
     );
   }
 }
-
-export default Admin;

@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, ProgressBar, Container, Row, Col, Card, Jumbotron} from 'react-bootstrap'
+import {Button, Container, Row, Col, Jumbotron} from 'react-bootstrap'
 import  {FileUploadItem} from './FileUploadItem'
 import {FileUploadApi} from '../api/FileUploadApi'
 
-export class Upload extends React.Component {
+export class FileUploadPanel extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -87,11 +87,11 @@ export class Upload extends React.Component {
 
                 </Row>
                 <Row>
-                    <Col md = {{span: 8, offset: 2}}>
+                    <Col >
                         <Jumbotron 
                             onDrop= {this.onDrop}
                             onDragOver = {this.onDragOver}
-                            style = {{minHeight: 100}} >
+                            style = {{minHeight: 200}} >
                         <span><b>Please drag one or more files to this area</b></span>
                         {fileInfo}
                         </Jumbotron>

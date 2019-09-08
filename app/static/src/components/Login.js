@@ -24,6 +24,7 @@ export class Login extends React.Component {
                 this.setState({loginSuccess:1, loginToken: res.data.data.sessionToken});
             })
             .catch(err =>{
+                console.log(err);
                 alert(err.response.data.errorMessage);
             })
 
