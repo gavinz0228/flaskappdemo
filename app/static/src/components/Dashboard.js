@@ -29,40 +29,39 @@ export class Dashboard extends React.Component {
     }
     render(){
         return (
-            <div>
-                <Container>
-                    <Row>
-                    <Alert variant="primary">
-                            10 files are awaiting to be processed at this moment.
-                        </Alert>
-                    </Row>
-                    <Row>
-                        <Line height={100} data = {this.state.uploadStatsByDate} />
-                    </Row>
-                    <Row>
 
-                    </Row>
-                    <Row>
-                        
-                        <Col md={{span:6}}>
-                            <div><h3>Current Unresolved Errors</h3></div>
-                            <ListGroup>
-                                <ListGroup.Item>Upload Errors: 0</ListGroup.Item>
-                                <ListGroup.Item>Processing Errors: 0</ListGroup.Item>
-                                <ListGroup.Item>Data Storage Errors: 0</ListGroup.Item>
-                                <ListGroup.Item>Application Errors: 0</ListGroup.Item>
-                                <ListGroup.Item>Unknown Application Errors: 0</ListGroup.Item>
-                            </ListGroup>
-  
-                        </Col>
-                        <Col md={{span:6}}>
-                            <div><h3>Error by Device Types</h3></div>
-                            <Pie data = {this.state.errorStatsByDeviceTypes} />
-                        </Col>
-                    </Row>
+            <Container>
+                <Row>
+                <Alert variant="primary">
+                        10 files are awaiting to be processed at this moment.
+                    </Alert>
+                </Row>
+                <Row>
+                    <Line height={100} data = {this.state.uploadStatsByDate} />
+                </Row>
+                <Row>
 
-                </Container>
-            </div>
+                </Row>
+                <Row>
+                    
+                    <Col md={{span:6}}>
+                        <Container><h3>Current Unresolved Errors</h3></Container>
+                        <ListGroup>
+                            <ListGroup.Item>Upload Errors: 0</ListGroup.Item>
+                            <ListGroup.Item>Processing Errors: 0</ListGroup.Item>
+                            <ListGroup.Item>Data Storage Errors: 0</ListGroup.Item>
+                            <ListGroup.Item>Application Errors: 0</ListGroup.Item>
+                            <ListGroup.Item>Unknown Application Errors: 0</ListGroup.Item>
+                        </ListGroup>
+
+                    </Col>
+                    <Col md={{span:6}}>
+                        <Container><h3>Upload by Device Types</h3></Container>
+                        <Pie data = {this.state.errorStatsByDeviceTypes} />
+                    </Col>
+                </Row>
+
+            </Container>
         )
     }
 }

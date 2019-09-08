@@ -7,7 +7,6 @@ export class FileUploadPanel extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            selectedFile:{},
             uploadPercentage:0,
             uploadDescription: "",
             filesChosen:[],
@@ -28,7 +27,7 @@ export class FileUploadPanel extends React.Component {
         })
     }
     onUpload(){
-        if (this.state.selectedFile === {})
+        if (this.state.filesChosen.length == 0)
         {
             alert("Please select a file before uploading");
             return;
@@ -37,15 +36,19 @@ export class FileUploadPanel extends React.Component {
         this.uploadButton.current.disabled = true;
         this.setState({uploadPercentage:0});
 
-        FileUploadApi.uploadFile(this.state.selectedFile, this.onUploadProgressChange)
-        .then(function(res){
-            componentThis.uploadButton.current.disabled = false;
-            console.log(res)
+        this.state.filesChosen.forEach(f =>{
+
+            FileUploadApi.uploadFile(f, this.onUploadProgressChange)
+            .then(function(res){
+                console.log(res)
+            })
+            .catch(function(error){
+                console.log(error.response)
+            })
+
         })
-        .catch(function(error){
-            componentThis.uploadButton.current.disabled = false;
-            console.log(error.response)
-        })
+
+
     }
 
     onFileChange(event){
@@ -56,10 +59,12 @@ export class FileUploadPanel extends React.Component {
         }
     }
     onUploadProgressChange(progressEvent){
+        /*
         let percentage = parseInt(progressEvent.loaded / this.state.selectedFile.size * 100)
         this.setState({uploadPercentage: percentage});
         this.setState({uploadDescription: percentage + "%"})
         console.log(progressEvent.loaded , this.state.selectedFile.size, this.state.uploadPercentage);
+        */
     }
     onDragOver(event)
     {
@@ -112,6 +117,9 @@ export class FileUploadPanel extends React.Component {
                         <span><b>Please drag one or more files to this area</b></span>
                         {fileInfo}
                         </Jumbotron>
+                        
+                        {this.state.filesChosen.length} File(s) selected
+                        <br/>
 
                         {/* <input type="file" name="fileUpload" onChange={this.onFileChange} /> */}
                         {/*<ProgressBar animated now={this.state.uploadPercentage} label={this.state.uploadDescription}/>*/}

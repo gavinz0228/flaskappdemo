@@ -1,5 +1,5 @@
 import React from 'react';
-import {Nav} from 'react-bootstrap'
+import {Nav, ListGroup, Container} from 'react-bootstrap'
 
 export class LogViewer extends React.Component {
   constructor(props){
@@ -7,20 +7,34 @@ export class LogViewer extends React.Component {
   }
   render(){
     return (
-      <Nav variant="tabs" defaultActiveKey="processingError">
-        <Nav.Item>
-          <Nav.Link eventKey="uploadError">Upload Error</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="processingError">Processing Error</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="processingLog" > Current Processing Log</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="disabled" > Sucess Log</Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <Container>
+          <Nav variant="tabs" defaultActiveKey="processingError">
+              <Nav.Item>
+                  <Nav.Link eventKey="processingError">Processing Error</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                  <Nav.Link eventKey="incompletedUploadTasks">Current Incompleted Upload Task</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                  <Nav.Link eventKey="processingTasks" > Current Processing Tasks</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                  <Nav.Link eventKey="completedUploadTasks" > Completed UploadTasks</Nav.Link>
+              </Nav.Item>
+          </Nav>
+          <ListGroup>
+              <ListGroup.Item>Task1
+                <ListGroup>
+                    <ListGroup.Item>
+                      Upload 1
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      Upload 2
+                    </ListGroup.Item>
+                </ListGroup>
+              </ListGroup.Item>
+          </ListGroup>
+      </Container>
       );
   }
 }
