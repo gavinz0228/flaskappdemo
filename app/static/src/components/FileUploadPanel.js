@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, Container, Row, Col, Jumbotron} from 'react-bootstrap'
+import {Button, Container, Row, Col, Jumbotron, Dropdown, ButtonGroup} from 'react-bootstrap'
 import  {FileUploadItem} from './FileUploadItem'
 import {FileUploadApi} from '../api/FileUploadApi'
-
+import {DataApi} from '../api/DataApi'
 export class FileUploadPanel extends React.Component {
     constructor(props){
         super(props);
@@ -10,7 +10,9 @@ export class FileUploadPanel extends React.Component {
             selectedFile:{},
             uploadPercentage:0,
             uploadDescription: "",
-            filesChosen:[]
+            filesChosen:[],
+            allDataTypeInfo:[],
+            seletedDataTypeInfo:null
         }
         this.uploadButton = React.createRef()
         this.onDragOver = this.onDragOver.bind(this);
@@ -18,8 +20,13 @@ export class FileUploadPanel extends React.Component {
         this.onFileChange = this.onFileChange.bind(this);
         this.onUpload = this.onUpload.bind(this);
         this.onUploadProgressChange = this.onUploadProgressChange.bind(this);
+        this.onDataTypeSelected = this.onDataTypeSelected.bind(this);
     }
-
+    componentDidMount(){
+        DataApi.getAllDataTypes().then(res=>{
+            this.setState({allDataTypeInfo: res.data.data})
+        })
+    }
     onUpload(){
         if (this.state.selectedFile === {})
         {
@@ -77,15 +84,25 @@ export class FileUploadPanel extends React.Component {
             }
         );
     }
+    onDataTypeSelected(e){
+        const targetKey = e.target.getAttribute("dtid");
+        if(targetKey)
+        {
+            const seletedTypeInfo = this.state.allDataTypeInfo.filter(dt => dt.dataTypeId == targetKey);
+            this.setState({seletedDataTypeInfo: seletedTypeInfo[0]});
+        }
+
+    }
     render(){
         const fileInfo = this.state.filesChosen.map((file)=>{
             return (<FileUploadItem fileInfo={file} key={file.name}/>)
         });
+        
+        const selectedTypeText = this.state.seletedDataTypeInfo==null? "Please Select a Data Type": this.state.seletedDataTypeInfo.dataTypeName;
+        console.log(this.state.seletedDataTypeInfo);
+        const dataTypeSelections = this.state.allDataTypeInfo.map(dt =><Dropdown.Item key={dt.dataTypeId} dtid={dt.dataTypeId}>{dt.dataTypeName}</Dropdown.Item> );
         return (
             <Container >
-                <Row>
-
-                </Row>
                 <Row>
                     <Col >
                         <Jumbotron 
@@ -95,11 +112,24 @@ export class FileUploadPanel extends React.Component {
                         <span><b>Please drag one or more files to this area</b></span>
                         {fileInfo}
                         </Jumbotron>
-                        <div>
-                            {/* <input type="file" name="fileUpload" onChange={this.onFileChange} /> */}
-                            <Button ref={this.uploadButton} onClick={this.onUpload}>Upload</Button>
-                            {/*<ProgressBar animated now={this.state.uploadPercentage} label={this.state.uploadDescription}/>*/}
-                        </div>
+
+                        {/* <input type="file" name="fileUpload" onChange={this.onFileChange} /> */}
+                        {/*<ProgressBar animated now={this.state.uploadPercentage} label={this.state.uploadDescription}/>*/}
+
+                        <Dropdown 
+                            as={ButtonGroup}
+                            onClick={this.onDataTypeSelected}
+                            >
+                            <Button variant="success">{selectedTypeText}</Button>
+
+                            <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+                            <Dropdown.Menu>
+                                {dataTypeSelections}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <br/>
+                        <br/>
+                        <Button ref={this.uploadButton} onClick={this.onUpload}>Upload</Button>
                     </Col>
                 </Row>
             </Container>

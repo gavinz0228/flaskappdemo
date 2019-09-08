@@ -5,7 +5,6 @@ export class DataTypeListItem extends React.Component{
         super(props);
         this.state = {dataTypeInfo:props.dataTypeInfo}
         this.addCallBack = this.props.addCallBack
-        console.log(this.addCallBack)
         this.onAdd = this.onAdd.bind(this);
     }
     onAdd(){
