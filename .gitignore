@@ -8,4 +8,4 @@ app/static/.pnp
 app/static/.pnp.js
 app/static/coverage
 
-app/static/build
+#app/static/build
