@@ -26,26 +26,30 @@ export class FileUploadPanel extends React.Component {
             this.setState({allDataTypeInfo: res.data.data})
         })
     }
-    onUpload(){
+    async onUpload(){
         if (this.state.filesChosen.length == 0)
         {
             alert("Please select a file before uploading");
             return;
         }
+        const res = await FileUploadApi.createUploadTask("test computer", "computer", this.state.filesChosen.length, "Technician1");
+        console.log(res)
+        const currTaskId =  res.data.data.taskId;
+
         const componentThis = this;
-        this.uploadButton.current.disabled = true;
+        //this.uploadButton.current.disabled = true;
         this.setState({uploadPercentage:0});
 
-        this.state.filesChosen.forEach(f =>{
-
-            FileUploadApi.uploadFile(f, this.onUploadProgressChange)
-            .then(function(res){
-                console.log(res)
-            })
-            .catch(function(error){
-                console.log(error.response)
-            })
-
+        this.state.filesChosen.forEach(async (f) =>{
+            try{
+                const res = await FileUploadApi.uploadFile(currTaskId, f, this.onUploadProgressChange)
+                alert(res.data.data.numLeft+" file(s) left. status:"+ res.data.data.status);
+                console.log(res.data.data);
+            }
+            catch(ex)
+            {
+                alert(ex);
+            }
         })
 
 

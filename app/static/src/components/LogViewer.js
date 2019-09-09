@@ -1,11 +1,24 @@
 import React from 'react';
 import {Nav, ListGroup, Container} from 'react-bootstrap'
-
+import {FileUploadApi} from '../api/FileUploadApi'
+import {UploadInfoItem} from './UploadInfoItem'
+import { UploadTaskItem } from './UploadTaskItem';
 export class LogViewer extends React.Component {
   constructor(props){
     super(props);
+    this.state = {uploadTasks:[]}
+  }
+  componentDidMount(){
+    FileUploadApi.getAllUploadTasks()
+      .then(res=>{
+        this.setState({uploadTasks: res.data.data})
+      })
+      .catch(err=>{
+        console.log(err);
+      });
   }
   render(){
+    const uploadTasks = this.state.uploadTasks.map(ut => <UploadTaskItem  uploadTask = {ut} key={ut.taskId} />)
     return (
       <Container>
           <Nav variant="tabs" defaultActiveKey="processingError">
@@ -22,17 +35,8 @@ export class LogViewer extends React.Component {
                   <Nav.Link eventKey="completedUploadTasks" > Completed UploadTasks</Nav.Link>
               </Nav.Item>
           </Nav>
-          <ListGroup>
-              <ListGroup.Item>Task1
-                <ListGroup>
-                    <ListGroup.Item>
-                      Upload 1
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      Upload 2
-                    </ListGroup.Item>
-                </ListGroup>
-              </ListGroup.Item>
+          <ListGroup style={{textAlign:"left"}}>
+            {uploadTasks}
           </ListGroup>
       </Container>
       );

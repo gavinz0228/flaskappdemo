@@ -10,7 +10,6 @@ export class Dashboard extends React.Component {
             errorStatsByDeviceTypes:{labels:[], datasets:[{data:[]}] }
         }
         this.uploadStatsChart = React.createRef(); 
-        this.componentDidMount = this.componentDidMount.bind(this);
     }
     componentDidMount(){
         StatsApi.getUploadStatsByDate()

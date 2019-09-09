@@ -11,12 +11,12 @@ class UploadTask:
             #raise exception
 
         task = {
-            "taskId":uuid.uuid4(),
+            "taskId": str(uuid.uuid4()),
             "manualUploader": manual_uploader,
             "deviceId": device_id, 
             "deviceType": device_type, 
             "fileNum": file_num,  
-            "fileArchivePath":[],
+            "files":[],
             "startTime": datetime.now(),
             "uploadStatus":"TaskCreated",
             "processingStatus": None}
@@ -25,26 +25,29 @@ class UploadTask:
         return task["taskId"]
 
     @staticmethod
-    def add_successful_upload(task_id, filePath):
-        tasks = list(filter(lambda t: t["taskId"] == task_id), UploadTask.all_tasks)
+    def add_upload(task_id, filePath, error):
+
+        tasks = list(filter(lambda t: t["taskId"] == task_id, UploadTask.all_tasks))
         num_file_left = 0
         if len(tasks) == 0:
             pass # upload task not found, raise exception
 
         task = tasks[0]
         upload_id = str(uuid.uuid4())
-        UploadTask.all_uploads.append({
+        upload_info = {
             "uploadId": upload_id,
             "taskId": task_id,
-            "archivePath": filePath
-        })
+            "archivePath": filePath,
+            "uploadError": error
+        }
+        UploadTask.all_uploads.append(upload_info)
 
-        ["fileArchivePath"].append(filePath)
-        if len(task["fileArchivePath"]) == task["fileNum"]:
+        task["files"].append(upload_info)
+        if len(task["files"]) == task["fileNum"]:
             task["uploadStatus"] = "TaskCompleted"
         else:
             task["uploadStatus"] = "FileBeingUploaded"
-            num_file_left = task["fileNum"] - len(task["fileArchivePath"])
+            num_file_left = task["fileNum"] - len(task["files"])
 
         return  upload_id, num_file_left
 
@@ -60,6 +63,12 @@ class UploadTask:
     @staticmethod 
     def seed():
         for i in range(10):
-            UploadTask.create_upload_task(str(uuid.uuid4()) , f"device type {i}", 1, "")
+            task_id = UploadTask.create_upload_task(str(uuid.uuid4()), f"device type {i}", 1, "")
+            UploadTask.add_upload(task_id, str(uuid.uuid4())+".json", None)
+            UploadTask.add_upload(task_id, str(uuid.uuid4())+".json", None)
+
+        for i in range(10):
+            task_id = UploadTask.create_upload_task(str(uuid.uuid4()), f"device type {i}", 1, "")
+            UploadTask.add_upload(task_id, str(uuid.uuid4())+".json", None)
 
 UploadTask.seed()

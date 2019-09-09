@@ -12,12 +12,13 @@ bp = Blueprint('upload', __name__, url_prefix='/upload')
 def tasks():
     if request.method == "POST":
         task_info = request.json
-        task_id = UploadTask.create_upload_task(task_info["deviceId"], task_info["deviceType"], task_info["fileNum"], None )
-        response({"taskId": task_id})
+        task_id = UploadTask.create_upload_task(task_info["deviceId"], task_info["deviceType"], task_info["fileNum"], task_info["manualUploader"] )
+        return response({"taskId": task_id})
     return response(UploadTask.get_all_tasks())
 
 @bp.route('/perform_task/<task_id>', methods = ['POST'])
 def perform_task(task_id):
+
     if 'file' not in request.files:
         raise NoFilePartFoundError()
 
@@ -30,8 +31,10 @@ def perform_task(task_id):
 
     archive_location = path.join(app.config["TEMP_UPLOAD_PATH"], file.filename)
     file.save(archive_location)
-    upload_id = UploadTask.add_successful_upload(task_id, archive_location)
-
-    return response({"uploadId": upload_id })
+    upload_id, num_left = UploadTask.add_upload(task_id, archive_location, None)
+    if num_left == 0:
+        return response({"uploadId": upload_id, "numLeft": num_left, "status": "completed"})
+    else:
+        return response({"uploadId": upload_id, "numLeft": num_left, "status": "incomplete"})
 
 
