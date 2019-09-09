@@ -16,7 +16,9 @@ def get_static_blueprint():
     @static_bp.route('/')
     def serve_root():
         return send_from_directory(static_dir, 'index.html')
-
+    @static_bp.route('/manifest.json')
+    def serve_manifest():
+        return send_from_directory(static_dir, 'manifest.json')
     @static_bp.route('/css/<path:css_path>')
     def serve_css(css_path):
         return send_file(path.join(static_dir, "css", css_path))
