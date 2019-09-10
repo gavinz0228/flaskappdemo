@@ -1,0 +1,14 @@
+{
+    "parsers":{
+        "csv": "CsvFileParser",
+        "json": "JsonFileParser"
+    },
+    "dataTypeMappings":{
+        "fitbitSleepData": "SleepDataTable",
+        "otherSleepData": "SleepDataTable",
+        "fitbitHeartRateDate": "HeartRateDataTable"
+    },
+    "workerSettings":{
+        "workerSleepInterval": 1
+    }
+}
