@@ -1,16 +1,16 @@
+from os import path, pardir, mkdir
 from flask import Flask, Blueprint, send_from_directory, send_file
 from flask_cors import CORS
 from app.api.auth import bp as auth_bp
 from app.api.upload import bp as upload_bp
 from app.api.stats import bp as stats_bp
 from app.api.data import bp as data_bp
-from os import path, pardir
-
 from app.api.common import InvalidFileUploadError,NoFilePartFoundError, handle_invalid_file_upload_error
+
+curr_dir = path.dirname(path.abspath(__file__))
 
 def get_static_blueprint():
     static_bp = Blueprint('static', __name__, url_prefix='')
-    curr_dir = path.dirname(path.abspath(__file__))
     static_dir = path.abspath(path.join(curr_dir, pardir,'static/build'))
     print(static_dir)
     @static_bp.route('/')
@@ -36,6 +36,11 @@ def get_static_blueprint():
         return send_file(path.join(static_dir,"static","css", static_path))
     return static_bp
 
+def create_archive_folder():
+    archive_path = path.join(curr_dir, pardir, "archive")
+    if not path.exists(archive_path):
+        mkdir(archive_path)
+
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(auth_bp)
@@ -48,6 +53,6 @@ def create_app():
     app.register_error_handler(InvalidFileUploadError, handle_invalid_file_upload_error)
     app.config.from_object('config.Config')
 
-
+    create_archive_folder()
 
     return app
